@@ -12,12 +12,18 @@ format.
 
 Installing django-uni-form
 ============================
-1. Install as uni_form in your Django apps directory.
-2. Copy the site_media files in uni_form to your project site_media directory.
-    uni-form-generic.css
-    uni-form.css
-    uni-form.jquery.js
-3. Add 'uni_form' to INSTALLED_APPS in settings.py.
+
+#. Install as uni_form in your Django apps directory.
+
+#. Copy the site_media files in uni_form to your project site_media directory.
+    
+    * uni-form-generic.css
+    
+    * uni-form.css
+    
+    * uni-form.jquery.js
+    
+#. Add 'uni_form' to INSTALLED_APPS in settings.py.
 
 
 Using the django-uni-form filter (Easy and fun!)
@@ -101,6 +107,34 @@ Using the django-uni-form templatetag in your form class (Intermediate)
     {% with form.helper as helper %}
         {% uni_form form helper %}
     {% endwith %}
+    
+Using the django-uni-form templatetag to change action/method (Intermediate)
+============================================================================
+1. In your form class add the following after field definitions::
+
+    from uni_form.helpers import FormHelper, Submit
+
+    class MyForm(forms.Form):
+        title = forms.CharField(label=_("Title"), max_length=30, widget=forms.TextInput())
+
+        # Attach a formHelper to your forms class.
+        helper = FormHelper()
+        
+        # Change the form and method
+        helper.form_action = 'my-url-name-defined-in-url-conf'
+        helper.form_method = 'GET' # Only GET and POST are legal
+        
+        # add in a submit and reset button
+        submit = Submit('search','search this site')
+        helper.add_input(submit)
+        
+2. In your template do the following::
+
+    {% load uni_form %}
+    {% with form.helper as helper %}
+        {% uni_form form helper %}
+    {% endwith %}
+
 
 
 Adding a layout to your form class (Intermediate)
